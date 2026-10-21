@@ -47,14 +47,15 @@ public class MainActivity extends Activity {
         int[] themes = CalendarThemeService.THEMES;
         for (int i=0;i<names.length;i++) {
             final int theme = themes[i];
+            final String name = names[i];
             Button btn = new Button(this);
-            btn.setText(names[i]);
+            btn.setText(name);
             btn.setTextSize(16);
             btn.setAllCaps(false);
             btn.setOnClickListener(v -> {
                 getSharedPreferences(PREFS, MODE_PRIVATE).edit().putInt(KEY, theme).apply();
                 CalendarThemeService.refreshFromPrefs();
-                status.setText("נבחר: " + names[i]);
+                status.setText("נבחר: " + name);
             });
             root.addView(btn, new LinearLayout.LayoutParams(-1, 58));
         }
