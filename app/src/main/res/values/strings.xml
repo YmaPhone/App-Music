@@ -1,4 +1,3 @@
 <resources>
     <string name="app_name">ערכת נושא ללוח עברי</string>
-    <string name="accessibility_service_description">החלת ערכת צבע על לוח עברי באמצעות שכבת תצוגה</string>
 </resources>
