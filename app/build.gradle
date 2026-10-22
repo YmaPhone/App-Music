@@ -1,10 +1,5 @@
 plugins { id 'com.android.application' }
 
-def releaseKeystore = System.getenv('RELEASE_KEYSTORE') ?: "$rootDir/release.keystore"
-def releaseStorePassword = System.getenv('RELEASE_STORE_PASSWORD') ?: 'HebrewCalendarRelease2026!'
-def releaseKeyAlias = System.getenv('RELEASE_KEY_ALIAS') ?: 'hebrewcalendar'
-def releaseKeyPassword = System.getenv('RELEASE_KEY_PASSWORD') ?: 'HebrewCalendarRelease2026!'
-
 android {
     namespace 'com.ymaphone.hebrewtheme'
     compileSdk 35
@@ -19,10 +14,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(releaseKeystore)
-            storePassword releaseStorePassword
-            keyAlias releaseKeyAlias
-            keyPassword releaseKeyPassword
+            initWith signingConfigs.debug
         }
     }
 
