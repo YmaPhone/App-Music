@@ -42,12 +42,15 @@ jobs:
           curl -fsSL -o /tmp/gradle.zip https://services.gradle.org/distributions/gradle-8.7-bin.zip
           unzip -q /tmp/gradle.zip -d /tmp
 
-      - name: Build debug APK
-        run: /tmp/gradle-8.7/bin/gradle assembleDebug --no-daemon --stacktrace
+      - name: Build signed release APK
+        run: /tmp/gradle-8.7/bin/gradle assembleRelease --no-daemon --stacktrace
+
+      - name: Verify APK signature
+        run: apksigner verify --verbose app/build/outputs/apk/release/app-release.apk
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: HebrewCalendarTheme-debug
-          path: app/build/outputs/apk/debug/*.apk
+          name: HebrewCalendarTheme-release
+          path: app/build/outputs/apk/release/app-release.apk
           if-no-files-found: error
