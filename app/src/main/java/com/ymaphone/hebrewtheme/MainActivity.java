@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -60,10 +60,32 @@ public class MainActivity extends Activity {
             root.addView(btn, new LinearLayout.LayoutParams(-1, 58));
         }
 
-        Button access = new Button(this);
-        access.setText("הפעל הרשאת ערכת נושא"); access.setAllCaps(false);
-        access.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)));
-        root.addView(access, new LinearLayout.LayoutParams(-1, 58));
+        Button overlay = new Button(this);
+        overlay.setText("הפעל הרשאת שכבת תצוגה");
+        overlay.setAllCaps(false);
+        overlay.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + getPackageName()))));
+        root.addView(overlay, new LinearLayout.LayoutParams(-1, 58));
+
+        Button usage = new Button(this);
+        usage.setText("הפעל הרשאת זיהוי האפליקציה");
+        usage.setAllCaps(false);
+        usage.setOnClickListener(v -> startActivity(new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)));
+        root.addView(usage, new LinearLayout.LayoutParams(-1, 58));
+
+        Button start = new Button(this);
+        start.setText("הפעל ערכת נושא");
+        start.setAllCaps(false);
+        start.setOnClickListener(v -> {
+            if (Settings.canDrawOverlays(this)) {
+                startForegroundService(new Intent(this, CalendarThemeService.class));
+                status.setText("ערכת הנושא פעילה");
+            } else {
+                startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + getPackageName())));
+            }
+        });
+        root.addView(start, new LinearLayout.LayoutParams(-1, 58));
 
         Button launch = new Button(this);
         launch.setText("פתח לוח עברי"); launch.setAllCaps(false);
@@ -73,7 +95,7 @@ public class MainActivity extends Activity {
         });
         root.addView(launch, new LinearLayout.LayoutParams(-1, 58));
 
-        status.setText("ערכת נושא פעילה: " + (selected == 0 ? "כהה" : "מותאם"));
+        status.setText("ערכת נושא נבחרה: " + (selected == 0 ? "כהה" : "מותאם"));
         setContentView(root);
     }
 }
