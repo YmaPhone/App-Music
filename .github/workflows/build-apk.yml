@@ -10,6 +10,8 @@ jobs:
     env:
       ANDROID_HOME: /usr/local/lib/android/sdk
       ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+      RELEASE_KEYSTORE: /home/runner/.config/.android/debug.keystore
+      RELEASE_KEY_ALIAS: androiddebugkey
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,12 +44,14 @@ jobs:
           mkdir -p "$HOME/.config/.android"
           PASS="$(openssl rand -hex 24)"
           keytool -genkeypair -v \
-            -keystore "$HOME/.config/.android/debug.keystore" \
+            -keystore "$RELEASE_KEYSTORE" \
             -storepass "$PASS" \
             -keypass "$PASS" \
-            -alias androiddebugkey \
+            -alias "$RELEASE_KEY_ALIAS" \
             -keyalg RSA -keysize 2048 -validity 10000 \
-            -dname "CN=Android Debug,O=Android,C=US"
+            -dname "CN=Hebrew Calendar Theme,O=YmaPhone,C=IL"
+          echo "RELEASE_STORE_PASSWORD=$PASS" >> "$GITHUB_ENV"
+          echo "RELEASE_KEY_PASSWORD=$PASS" >> "$GITHUB_ENV"
 
       - name: Install Gradle
         run: |
