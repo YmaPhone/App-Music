@@ -39,10 +39,10 @@ jobs:
 
       - name: Create temporary signing key
         run: |
-          mkdir -p "$HOME/.android"
+          mkdir -p "$HOME/.config/.android"
           PASS="$(openssl rand -hex 24)"
           keytool -genkeypair -v \
-            -keystore "$HOME/.android/debug.keystore" \
+            -keystore "$HOME/.config/.android/debug.keystore" \
             -storepass "$PASS" \
             -keypass "$PASS" \
             -alias androiddebugkey \
